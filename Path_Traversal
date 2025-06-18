@@ -29,3 +29,11 @@ For example:
 3. Restrict File Access
 Enforce access to only specific directories (e.g., /uploads/, /static/) and block absolute paths (/etc/passwd).
 
+# Impacts
+ File Disclosure	Read sensitive system or app files
+Credential Theft	Steal passwords, tokens, SSH keys
+Reconnaissance	Learn internal file structure, users, tech stack
+Access Control Bypass	Access other users’ or admin-only files
+Remote Code Execution	If file writes are possible (e.g., LFI + upload combo)
+Log Access/Cleanup	View or clean logs, hide tracks
+App/Server Recon	Discover backend configs, frameworks, and server logic
