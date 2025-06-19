@@ -1,2 +1,36 @@
 File upload vulnerabilities are when a web server allows users to upload files to its filesystem without sufficiently validating things like their name, type, contents, or size. Failing to properly enforce restrictions on these could mean that even a basic image upload function can be used to upload arbitrary and potentially dangerous files instead.
 
+# Impact of file upload vulnerabilities
+RCE	Uploading web shells to run system commands
+Data Theft	Reading configs, databases, secrets
+Malware Distribution	Hosting malware or backdoors
+XSS / Client Attacks	Uploading malicious HTML/SVG/JS files
+Auth Bypass	Replacing or hijacking authentication mechanisms
+DoS	Crashing services or filling disk space
+Persistent Backdoors	Maintaining long-term control
+Reputation Damage	Blacklisting, SEO damage, legal risks
+
+# How Web Servers Handle Requests for Static Files
+What are Static Files?
+Static files are files that don’t change when different users request them. These include:
+Images (.jpg, .png)
+CSS stylesheets (.css)
+JavaScript files (.js)
+Fonts, PDFs, videos, etc.
+They are not processed by the backend — they are just fetched and served.
+How Web Servers Handle Static File Requests:
+1. Parse the URL Path - Maps it to a file path on the server’s filesystem.
+2. Identify File Extension
+3. Map Extension to MIME Type - Server uses config to assign a Content-Type header.
+4. Serve or Execute Based on Type & Server Config:
+- Non-executable (static): File is sent directly (e.g., image, HTML).
+- Executable + execution allowed: File is processed (e.g., .php → PHP interpreter).
+- Executable + execution not allowed:
+Server throws an error Or Sends raw source code (leads to information disclosure).
+
+Key Headers:
+Content-Type: Shows MIME type of file (e.g., text/html, image/png).
+
+
+Web shell
+A web shell is a malicious script that enables an attacker to execute arbitrary commands on a remote web server simply by sending HTTP requests to the right endpoint.
