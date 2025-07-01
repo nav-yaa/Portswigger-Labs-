@@ -142,8 +142,15 @@ To solve this lab, we took the request in the burp and then analysed it and we f
 
 
 Flawed validation of the file's contents
-
-
-
+Some servers don’t just trust the Content-Type (like image/jpeg) from the upload request. They actually check the file contents to see if it’s really an image.
+example
+1. If you upload a PHP file pretending it's an image, the server may look for image properties (like dimensions).
+Since PHP scripts have no dimensions, the server knows it’s not a real image and blocks the upload.
+2. Some file types have signature bytes (called magic numbers) at the beginning or end of the file.
+These act like a fingerprint to verify the file type.
+Example: A real JPEG file always starts with: FF D8 FF.
+This is a better way to validate files than just trusting the extension or content-type.
+Tools like ExifTool can modify image metadata to hide malicious code inside a valid image.
+These are called polyglot files
 
 
